@@ -67,19 +67,47 @@ outputText.innerHTML = '';
 function appendText(t)
 {
     outputText.appendChild(document.createTextNode(t));
+}
+
+function createTech(t)
+{
     outputText.appendChild(document.createElement('br'));
     outputText.appendChild(document.createElement('br'));
+
+    var textNode = document.createTextNode(t);
+
+    // var textDiv = document.createElement('div');
+    // textDiv.style.fontWeight = "bold";
+
+    // textDiv.appendChild(textNode);
+
+    // outputText.appendChild(textDiv);
+
+    outputText.appendChild(textNode);
+}
+
+function createSubTech(t)
+{
+    outputText.appendChild(document.createElement('br'));
+    outputText.appendChild(document.createTextNode(t));
 }
 
 appendText('UNIVERSE ' + seed);
 
-var technology_ease = new Array("trivial", "a basic research project", "a massive undertaking", "only possible as a civilization-wide project", "an obvious crapshoot", "an unclear, costly crapshoot");
+var technology_ease = new Array(
+    "trivial",
+    "a basic research project",
+    "a massive undertaking",
+    "only possible as a civilization-wide project",
+    "an obvious crapshoot",
+    "an unclear, costly crapshoot");
+var TECH_DOABLE_MAX_INDEX = 3;
 
 var technologies = new Array(
     "high-strength materials",
     "cryogenics",
     "long-distance radio communication",
-    "genetic engineering",
+    "bio-engineering",
     "bionics and cybernetics",
     "uploaded consciousnesses",
     "androids",
@@ -90,22 +118,71 @@ var technologies = new Array(
     "slower-than-light interstellar travel",
     "faster-than-light communication",
     "teleportation",
-    "faster-than-light travel"
+    "faster-than-light travel",
+    "long-distance research disruption (Sophons)"
     );
 
+var subTechs = [];
+subTechs["high-strength materials"] = new Array(
+    "space elevator construction",
+    "ring worlds"
+    );
+subTechs["bio-engineering"] = new Array(
+    "high-g tolerance",
+    "long-age treatment"
+    );
+subTechs["AI"] = new Array(
+    "indistinguishable VR environments",
+    "god-level AI"
+    );
+subTechs["slower-than-light interstellar travel"] = new Array(
+    "solar sails",
+    "hydrogen scoops",
+    "ion engines",
+    "fusion torchships"
+    );
+subTechs["faster-than-light travel"] = new Array(
+    "straight-up warp drive",
+    "naturally-occuring wormholes",
+    "jump gate creation"
+    );
 
-
+//OUTPUT
 for (i = 0; i < technologies.length; i++) {
     var tech = technologies[i];
     var last_char = tech.charAt(tech.length - 1);
+    var conjugation = 'ERROR';
     if (last_char == 's')
-        var conjugation = 'are';
+        conjugation = 'are';
     else
-        var conjugation = 'is';
+        conjugation = 'is';
 
-    appendText(tech + ' ' +
+    var techEase = rand_int(technology_ease.length);
+
+    createTech(tech + ' ' +
         conjugation + ' ' +
-        rand_choice(technology_ease) + '.');
+        technology_ease[techEase] + '.');
+
+    if (!subTechs[tech])
+        continue;
+    if (techEase > TECH_DOABLE_MAX_INDEX)
+        continue;
+
+    for (s = 0; s < subTechs[tech].length; s++) {
+        var subTech = subTechs[tech][s];
+
+        var last_char = subTech.charAt(subTech.length - 1);
+
+        if (last_char == 's')
+            conjugation = 'are';
+        else
+            conjugation = 'is';
+
+        createSubTech(subTech + ' ' +
+            conjugation + ' ' +
+            rand_choice(technology_ease) + '.');
+
+    }
 }
 
 
