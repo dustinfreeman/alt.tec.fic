@@ -8,14 +8,14 @@
     <h1 style="font-family:Lucida Console;text-align:center;color:#aaffaa;">ALT.TEC.FIC</h1>
 
     <p style="font-family:Lucida Console;text-align:center;color:#aaffaa;">
-        Randomly generated technology for space-based science fiction.
+        randomly generated technology for science fiction
     </p>
 
-    <div id='output' style="margin:0;width:100%;height:500px;text-align:center;color:#aaffaa;background-color:#111111;">
+    <div id='output' style="margin:0;width:100%;text-align:center;color:#aaffaa;background-color:#111111;">
         Text will be replaced by script
     </div>
 
-    <p style="text-align:center;"><a style="color:#aaaaff;" href="https://github.com/dustinfreeman/alt.tec.fic">Go to a different Universe</a></p>
+    <p style="text-align:center;"><a style="color:#aaaaff;" href="index.html">Go to a different Universe</a></p>
 
     <p style="text-align:center;"><a style="color:#aaaaff;" href="http://www.dustinfreeman.org">By Dustin Freeman</a></p>
 
@@ -23,15 +23,86 @@
 
     <script type="text/javascript">
 
-    var outputText = document.getElementById('output');
-    outputText.innerHTML = '';
+//RANDOM
+var seed = 0;
 
-    var text = document.createTextNode('HELLO FROM DUSTIN');
+//seed the seed
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
+}
+seed = getRandomInt(0, Math.pow(2,32));
 
-    outputText.appendChild(text);
+Math.seed = function(s) {
+    return function() {
+        s = Math.sin(s) * 10000; return s - Math.floor(s);
+    };
+};
 
+//override the Math.random function with our seed
+Math.random = Math.seed(seed);
 
+function rand_int(n)
+{
+    //up to but not including n.
+    return Math.floor(Math.random()*n);
+}
 
+function rand_choice(arr) {
+    var index = rand_int(arr.length);
+    var word = arr[index];
+    return word;
+}
+
+function rand_choice_and_remove(arr) {
+    var index = rand_int(arr.length);
+    var word = arr[index];
+    arr.splice(index, 1);
+    return word;
+}
+
+//SETUP
+var outputText = document.getElementById('output');
+outputText.innerHTML = '';
+
+function appendText(t)
+{
+    outputText.appendChild(document.createTextNode(t));
+    outputText.appendChild(document.createElement('br'));
+    outputText.appendChild(document.createElement('br'));
+}
+
+appendText('UNIVERSE ' + seed);
+
+var technology_ease = new Array("trivial", "a basic research project", "a massive undertaking", "only possible as a civilization-wide project", "an obvious crapshoot", "an unclear, costly crapshoot");
+
+var technologies = new Array(
+    "high-strength materials",
+    "cryogenics",
+    "long-distance radio communications",
+    "bionics and cybernetics",
+    "genetic engineering",
+    "uploaded consciousnesses",
+    "AIs",
+    "enclosed sustainable environments",
+    "terraforming",
+    "artificial gravity",
+    "slower-than-light interstellar travel",
+    "teleportation",
+    "FTL travel"
+    );
+
+for (i = 0; i < technologies.length; i++) {
+    var tech = technologies[i];
+    var last_char = tech.charAt(tech.length - 1);
+    if (last_char == 's')
+        var conjugation = 'are';
+    else
+        var conjugation = 'is';
+
+    appendText(tech + ' ' +
+        conjugation + ' ' +
+        rand_choice(technology_ease) + '.');
+}
 
 
 
