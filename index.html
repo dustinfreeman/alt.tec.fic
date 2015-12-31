@@ -17,7 +17,7 @@
 
     <p style="text-align:center;"><a style="color:#aaaaff;" href="index.html">Go to a different Universe</a></p>
 
-    <p style="text-align:center;"><a style="color:#aaaaff;" href="http://www.dustinfreeman.org">By Dustin Freeman</a></p>
+    <p style="text-align:center;"><a style="color:#aaaaff;" href="http://www.dustinfreeman.org">by Dustin Freeman</a></p>
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 
@@ -98,6 +98,7 @@ var technology_ease = new Array(
     "trivial",
     "a massive undertaking",
     "only possible as a civilization-wide project",
+    "barely functional",
     "an obvious crapshoot",
     "an unclear, costly crapshoot",
     "not really desired by anyone");
@@ -105,7 +106,7 @@ var TECH_DOABLE_MAX_INDEX = 3;
 
 var technologies = new Array(
     "high-strength materials",
-    "cryogenics",
+    "suspended animation",
     "long-distance radio communication",
     "bio-engineering",
     "bionics and cybernetics",
@@ -120,7 +121,8 @@ var technologies = new Array(
     "faster-than-light communication",
     "teleportation",
     "faster-than-light travel",
-    "long-distance research disruption (Sophons)"
+    "long-distance research disruption (Sophons)",
+    "energy shielding"
     );
 
 var subTechs = [];
@@ -131,9 +133,12 @@ subTechs["high-strength materials"] = new Array(
 subTechs["bio-engineering"] = new Array(
     "high-g tolerance",
     "long-age treatment",
-    "sublimation"
+    "sublimation",
+    "long-term microgravity habitation and reproduction",
+    "biosphere compatibility with alien biology"
     );
 subTechs["AI"] = new Array(
+    "von Neumann probes",
     "indistinguishable VR environments",
     "god-level AI"
     );
@@ -142,7 +147,8 @@ subTechs["slower-than-light interstellar travel"] = new Array(
     "hydrogen scoops",
     "ion engines",
     "generation ships",
-    "fusion torchships"
+    "fusion torchships",
+    "massless propellant"
     );
 subTechs["faster-than-light travel"] = new Array(
     "straight-up warp drive",
@@ -190,11 +196,6 @@ for (i = 0; i < technologies.length; i++) {
 
     }
 }
-
-
-
-
-
 
     </script>
 
