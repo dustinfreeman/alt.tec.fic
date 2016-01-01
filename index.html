@@ -23,15 +23,31 @@
 
     <script type="text/javascript">
 
-//RANDOM
-var seed = 0;
-
+//CHECK WE HAVE A RANDOM seed
+function getUrlVars() {
+    var vars = {};
+    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+    vars[key] = value;
+    });
+    return vars;
+}
 //seed the seed
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
-seed = getRandomInt(0, Math.pow(2,32));
+function makeSeed()
+{
+    return getRandomInt(0, Math.pow(2,32));
+}
+//check GET variable for universe number
+var seed = getUrlVars()["u"];
+if (seed === null)
+{
+    //go to the same webpage, this time with out seed
+    window.location.href = window.location.href +"?u=" + makeSeed();
+}
 
+//SETUP RANDOM
 Math.seed = function(s) {
     return function() {
         s = Math.sin(s) * 10000; return s - Math.floor(s);
@@ -197,7 +213,7 @@ for (i = 0; i < technologies.length; i++) {
     }
 }
 
-    </script>
+</script>
 
 
 </body>
