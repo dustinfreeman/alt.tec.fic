@@ -41,7 +41,7 @@ function makeSeed()
 }
 //check GET variable for universe number
 var seed = getUrlVars()["u"];
-if (seed === null)
+if (typeof(seed) == undefined || seed == null)
 {
     //go to the same webpage, this time with out seed
     window.location.href = window.location.href +"?u=" + makeSeed();
