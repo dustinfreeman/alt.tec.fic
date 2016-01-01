@@ -120,94 +120,97 @@ var technology_ease = new Array(
     "not really desired by anyone");
 var TECH_DOABLE_MAX_INDEX = 3;
 
-var technologies = new Array(
-    "high-strength materials",
-    "suspended animation",
-    "long-distance radio communication",
-    "bio-engineering",
-    "bionics and cybernetics",
-    "uploaded consciousnesses",
-    "androids",
-    "AI",
-    "enclosed permanently sustainable environments",
-    "terraforming",
-    "artificial gravity",
-    "slower-than-light interstellar travel",
-    "planetary annihilation",
-    "faster-than-light communication",
-    "teleportation",
-    "faster-than-light travel",
-    "long-distance research disruption (Sophons)",
-    "energy shielding"
-    );
-
 var subTechs = [];
-subTechs["high-strength materials"] = new Array(
-    "space elevator construction",
-    "ring worlds"
-    );
-subTechs["bio-engineering"] = new Array(
-    "high-g tolerance",
-    "long-age treatment",
-    "sublimation",
-    "long-term microgravity habitation and reproduction",
-    "biosphere compatibility with alien biology"
-    );
-subTechs["AI"] = new Array(
-    "von Neumann probes",
-    "indistinguishable VR environments",
-    "god-level AI"
-    );
-subTechs["slower-than-light interstellar travel"] = new Array(
-    "solar sails",
-    "hydrogen scoops",
-    "ion engines",
-    "generation ships",
-    "fusion torchships",
-    "massless propellant"
-    );
-subTechs["faster-than-light travel"] = new Array(
-    "straight-up warp drive",
-    "naturally-occuring wormholes",
-    "jump gate creation"
-    );
 subTechs["planetary annihilation"] = new Array(
     "solar annihilation"
     );
 
+var tech_json = `{ "technologies" : [
+    {"name":"high-strength materials",
+        "subTechs": [
+        "space elevator construction",
+        "ring worlds"
+    ]} ,
+    {"name":"bio-engineering",
+        "subTechs": [
+            "high-g tolerance",
+            "long-age treatment",
+            "long-term microgravity habitation and reproduction",
+            "biosphere compatibility with alien biology"
+    ]} ,
+    {"name":"suspended animation"} ,
+    {"name":"long-distance radio communication"} ,
+    {"name":"bionics and cybernetics"} ,
+    {"name":"AI",
+        "subTechs": [
+            "human-appearing robots",
+            "von Neumann probes",
+            "indistinguishable VR environments",
+            "god-level AI"
+    ]} ,
+    {"name":"uploaded consciousnesses"} ,
+    {"name":"enclosed permanently sustainable environments"} ,
+    {"name":"terraforming"} ,
+    {"name":"artificial gravity"} ,
+    {"name":"slower-than-light interstellar travel",
+        "subTechs": [
+            "solar sails",
+            "hydrogen scoops",
+            "ion engines",
+            "generation ships",
+            "fusion torchships",
+            "massless propellant"
+    ]} ,
+    {"name":"planetary annihilation",
+        "subTechs": [
+            "solar annihilation"
+    ]} ,
+    {"name":"faster-than-light communication"} ,
+    {"name":"teleportation"} ,
+    {"name":"faster-than-light travel",
+        "subTechs": [
+            "straight-up warp drive",
+            "naturally-occuring wormholes",
+            "jump gate creation"
+    ]} ,
+    {"name":"long-distance research disruption (Sophons)"} ,
+    {"name":"energy shielding"},
+    {"name":"transcendence"}
+    ] }`;
+
+var tech = JSON.parse(tech_json);
+var technologies = tech.technologies;
+
+function get_tobe_conjugated(noun)
+{
+    if (noun.charAt(noun.length - 1) == 's')
+        return 'are';
+    else
+        return 'is';
+}
+
 //OUTPUT
 for (i = 0; i < technologies.length; i++) {
     var tech = technologies[i];
-    var last_char = tech.charAt(tech.length - 1);
-    var conjugation = 'ERROR';
-    if (last_char == 's')
-        conjugation = 'are';
-    else
-        conjugation = 'is';
-
     var techEase = rand_int(technology_ease.length);
 
-    createTech(tech + ' ' +
-        conjugation + ' ' +
+    createTech(tech.name + ' ' +
+        get_tobe_conjugated(tech.name) + ' ' +
         technology_ease[techEase] + '.');
 
-    if (!subTechs[tech])
+    // var subTechList = tech.name.subTechs;
+    var subTechList = tech.subTechs;
+
+    if (!subTechList || subTechList.length === 0)
         continue;
     if (techEase > TECH_DOABLE_MAX_INDEX)
         continue;
 
-    for (s = 0; s < subTechs[tech].length; s++) {
-        var subTech = subTechs[tech][s];
-
-        var last_char = subTech.charAt(subTech.length - 1);
-
-        if (last_char == 's')
-            conjugation = 'are';
-        else
-            conjugation = 'is';
+    for (s = 0; s < subTechList.length; s++) {
+        var subTech = subTechList[s];
 
         createSubTech(subTech + ' ' +
-            conjugation + ' ' +
+            get_tobe_conjugated(subTech) + ' ' +
             rand_choice(technology_ease) + '.');
 
     }
