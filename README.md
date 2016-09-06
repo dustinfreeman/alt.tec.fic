@@ -1,5 +1,5 @@
 # alt.tec.fic
 
-Alternate Technology Trees for Multiple Universes
+Alternate Technology Trees for Multiple Universes.
 
-http://dustinfreeman.github.io/alt.tec.fic/
+Use interactively here: http://dustinfreeman.github.io/alt.tec.fic/
