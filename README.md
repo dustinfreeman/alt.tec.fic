@@ -2,4 +2,4 @@
 
 Alternate Technology Trees for Multiple Universes.
 
-Use interactively here: http://dustinfreeman.github.io/alt.tec.fic/
+Use interactively here: https://dustinfreeman.github.io/alt.tec.fic/
