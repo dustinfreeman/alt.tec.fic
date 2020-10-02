@@ -1,131 +1,144 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <title>alt.tec.fic</title>
-    <meta charset="utf-8">
-</head>
-<body style="background-color:#000000;">
-    <h1 style="font-family:Lucida Console;text-align:center;color:#aaffaa;">ALT.TEC.FIC</h1>
+    <meta charset="utf-8" />
+  </head>
+  <body style="background-color: #000000">
+    <h1 style="font-family: Lucida Console; text-align: center; color: #aaffaa">
+      ALT.TEC.FIC
+    </h1>
 
-    <p style="font-family:Lucida Console;text-align:center;color:#aaffaa;">
-        randomly generated tech trees for science fiction
+    <p style="font-family: Lucida Console; text-align: center; color: #aaffaa">
+      randomly generated tech trees for science fiction
     </p>
 
-    <div id='output' style="margin:0;width:100%;text-align:center;color:#aaffaa;background-color:#111111;">
-        Text will be replaced by script
+    <div
+      id="output"
+      style="
+        margin: 0;
+        width: 100%;
+        text-align: center;
+        color: #aaffaa;
+        background-color: #111111;
+      "
+    >
+      Text will be replaced by script
     </div>
 
-    <p style="text-align:center;"><a style="color:#aaaaff;" href="index.html">Go to a different Universe</a></p>
+    <p style="text-align: center">
+      <a style="color: #aaaaff" href="index.html">Go to a different Universe</a>
+    </p>
 
-    <p style="text-align:center;"><a style="color:#aaaaff;" href="http://www.dustinfreeman.org">by Dustin Freeman</a></p>
+    <p style="text-align: center">
+      <a style="color: #aaaaff" href="http://www.dustinfreeman.org"
+        >by Dustin Freeman</a
+      >
+    </p>
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 
     <script type="text/javascript">
+      //CHECK WE HAVE A RANDOM seed
+      function getUrlVars() {
+        var vars = {};
+        var parts = window.location.href.replace(
+          /[?&]+([^=&]+)=([^&]*)/gi,
+          function (m, key, value) {
+            vars[key] = value;
+          }
+        );
+        return vars;
+      }
+      //seed the seed
+      function getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min)) + min;
+      }
+      function makeSeed() {
+        return getRandomInt(0, Math.pow(2, 32));
+      }
+      //check GET variable for universe number
+      var seed = getUrlVars()["u"];
+      if (typeof seed == undefined || seed == null) {
+        //go to the same webpage, this time with out seed
+        window.location.href = window.location.href + "?u=" + makeSeed();
+      }
 
-//CHECK WE HAVE A RANDOM seed
-function getUrlVars() {
-    var vars = {};
-    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
-    vars[key] = value;
-    });
-    return vars;
-}
-//seed the seed
-function getRandomInt(min, max) {
-  return Math.floor(Math.random() * (max - min)) + min;
-}
-function makeSeed()
-{
-    return getRandomInt(0, Math.pow(2,32));
-}
-//check GET variable for universe number
-var seed = getUrlVars()["u"];
-if (typeof(seed) == undefined || seed == null)
-{
-    //go to the same webpage, this time with out seed
-    window.location.href = window.location.href +"?u=" + makeSeed();
-}
+      //SETUP RANDOM
+      Math.seed = function (s) {
+        return function () {
+          s = Math.sin(s) * 10000;
+          return s - Math.floor(s);
+        };
+      };
 
-//SETUP RANDOM
-Math.seed = function(s) {
-    return function() {
-        s = Math.sin(s) * 10000; return s - Math.floor(s);
-    };
-};
+      //override the Math.random function with our seed
+      Math.random = Math.seed(seed);
 
-//override the Math.random function with our seed
-Math.random = Math.seed(seed);
+      function rand_int(n) {
+        //up to but not including n.
+        return Math.floor(Math.random() * n);
+      }
 
-function rand_int(n)
-{
-    //up to but not including n.
-    return Math.floor(Math.random()*n);
-}
+      function rand_choice(arr) {
+        var index = rand_int(arr.length);
+        var word = arr[index];
+        return word;
+      }
 
-function rand_choice(arr) {
-    var index = rand_int(arr.length);
-    var word = arr[index];
-    return word;
-}
+      function rand_choice_and_remove(arr) {
+        var index = rand_int(arr.length);
+        var word = arr[index];
+        arr.splice(index, 1);
+        return word;
+      }
 
-function rand_choice_and_remove(arr) {
-    var index = rand_int(arr.length);
-    var word = arr[index];
-    arr.splice(index, 1);
-    return word;
-}
+      //SETUP
+      var outputText = document.getElementById("output");
+      outputText.innerHTML = "";
 
-//SETUP
-var outputText = document.getElementById('output');
-outputText.innerHTML = '';
+      function appendText(t) {
+        outputText.appendChild(document.createTextNode(t));
+      }
 
-function appendText(t)
-{
-    outputText.appendChild(document.createTextNode(t));
-}
+      function createTech(t) {
+        outputText.appendChild(document.createElement("br"));
+        outputText.appendChild(document.createElement("br"));
 
-function createTech(t)
-{
-    outputText.appendChild(document.createElement('br'));
-    outputText.appendChild(document.createElement('br'));
+        var textNode = document.createTextNode(t);
 
-    var textNode = document.createTextNode(t);
+        // var textDiv = document.createElement('div');
+        // textDiv.style.fontWeight = "bold";
 
-    // var textDiv = document.createElement('div');
-    // textDiv.style.fontWeight = "bold";
+        // textDiv.appendChild(textNode);
 
-    // textDiv.appendChild(textNode);
+        // outputText.appendChild(textDiv);
 
-    // outputText.appendChild(textDiv);
+        outputText.appendChild(textNode);
+      }
 
-    outputText.appendChild(textNode);
-}
+      function createSubTech(t) {
+        outputText.appendChild(document.createElement("br"));
+        outputText.appendChild(document.createTextNode(t));
+      }
 
-function createSubTech(t)
-{
-    outputText.appendChild(document.createElement('br'));
-    outputText.appendChild(document.createTextNode(t));
-}
+      appendText("UNIVERSE " + seed);
 
-appendText('UNIVERSE ' + seed);
+      var technology_ease = new Array(
+        "trivial",
+        "a massive undertaking",
+        "only possible as a civilization-wide project",
+        "barely functional",
+        "an obvious crapshoot",
+        "an unclear, costly crapshoot",
+        "not really desired by anyone"
+      );
+      var TECH_DOABLE_MAX_INDEX = 3;
 
-var technology_ease = new Array(
-    "trivial",
-    "a massive undertaking",
-    "only possible as a civilization-wide project",
-    "barely functional",
-    "an obvious crapshoot",
-    "an unclear, costly crapshoot",
-    "not really desired by anyone");
-var TECH_DOABLE_MAX_INDEX = 3;
+      var subTechs = [];
+      subTechs["planetary annihilation"] = new Array("solar annihilation");
 
-var subTechs = [];
-subTechs["planetary annihilation"] = new Array(
-    "solar annihilation"
-    );
-
-var tech_json = `{ "technologies" : [
+      var tech_json = `{ "technologies" : [
     {"name":"high-strength materials",
         "subTechs": [
         "space elevator construction",
@@ -133,8 +146,9 @@ var tech_json = `{ "technologies" : [
     ]} ,
     {"name":"bio-engineering",
         "subTechs": [
-            "high-g tolerance",
+            "cloning",
             "life extension",
+            "high-g tolerance",
             "long-term microgravity habitation and reproduction",
             "telepathy",
             "biosphere compatibility with alien biology"
@@ -177,49 +191,56 @@ var tech_json = `{ "technologies" : [
     ]} ,
     {"name":"long-distance research disruption (Sophons)"} ,
     {"name":"energy shielding"},
-    {"name":"transcendence"}
-    ] }`;
+    {"name":"transcendence"},
+    {"name":"time travel",
+    "subTechs": [
+            "killing an ancestor",
+            "historical tourism",
+            "temporal wars"
+    ]}
+    ]}`;
 
-var tech = JSON.parse(tech_json);
-var technologies = tech.technologies;
+      var tech = JSON.parse(tech_json);
+      var technologies = tech.technologies;
 
-function get_tobe_conjugated(noun)
-{
-    if (noun.charAt(noun.length - 1) == 's')
-        return 'are';
-    else
-        return 'is';
-}
+      function get_tobe_conjugated(noun) {
+        if (noun.charAt(noun.length - 1) == "s") return "are";
+        else return "is";
+      }
 
-//OUTPUT
-for (i = 0; i < technologies.length; i++) {
-    var tech = technologies[i];
-    var techEase = rand_int(technology_ease.length);
+      //OUTPUT
+      for (i = 0; i < technologies.length; i++) {
+        var tech = technologies[i];
+        var techEase = rand_int(technology_ease.length);
 
-    createTech(tech.name + ' ' +
-        get_tobe_conjugated(tech.name) + ' ' +
-        technology_ease[techEase] + '.');
+        createTech(
+          tech.name +
+            " " +
+            get_tobe_conjugated(tech.name) +
+            " " +
+            technology_ease[techEase] +
+            "."
+        );
 
-    // var subTechList = tech.name.subTechs;
-    var subTechList = tech.subTechs;
+        // var subTechList = tech.name.subTechs;
+        var subTechList = tech.subTechs;
 
-    if (!subTechList || subTechList.length === 0)
-        continue;
-    if (techEase > TECH_DOABLE_MAX_INDEX)
-        continue;
+        if (!subTechList || subTechList.length === 0) continue;
+        if (techEase > TECH_DOABLE_MAX_INDEX) continue;
 
-    for (s = 0; s < subTechList.length; s++) {
-        var subTech = subTechList[s];
+        for (s = 0; s < subTechList.length; s++) {
+          var subTech = subTechList[s];
 
-        createSubTech(subTech + ' ' +
-            get_tobe_conjugated(subTech) + ' ' +
-            rand_choice(technology_ease) + '.');
-
-    }
-}
-
-</script>
-
-
-</body>
+          createSubTech(
+            subTech +
+              " " +
+              get_tobe_conjugated(subTech) +
+              " " +
+              rand_choice(technology_ease) +
+              "."
+          );
+        }
+      }
+    </script>
+  </body>
 </html>
